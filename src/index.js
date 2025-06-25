@@ -13,6 +13,11 @@ const app = express();
 app.use(bodyParser.json());
 
 connect(process.env.MONGO_URI || 'mongodb://localhost:27017/bookdb');
+
+app.use((err, req, res, next) => {
+  console.error('Unhandled Error:', err);
+  res.status(500).json({ error: 'Internal Server Error' });
+});
 app.use('/api/health', healthRoutes);
 
 app.use('/api/auth', authRoutes);
